@@ -64,7 +64,10 @@
         "remark-preset-lint-itgalaxy": "^4.0.0",
         "rimraf": "^2.5.2",
         "tmp": "^0.0.31",
-        "webpack": "^1.14.0"
+        "webpack": "^2.2.1"
+    },
+    "peerDependencies": {
+        "webpack": "^1.13.2 || ^2.2.1"
     },
     "scripts": {
         "lint:eslint": "eslint . --ignore-path .gitignore --ignore-pattern 'src/__tests__/fixtures/**/*.js' --color",
