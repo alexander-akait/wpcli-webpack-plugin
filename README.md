@@ -32,9 +32,11 @@ export default {
 ## API
 
 - `command` (require) `string` or `array` - Executable command or commands.
+
 - `options` (optional) `object` - Options.
-    - `bin` - Path to `wp-cli` bin.
-    - `maxConcurrency` - Sets the maximum number of instances of `wp-cli` that can run at once.
+
+  - `bin` - Path to `wp-cli` bin.
+  - `maxConcurrency` - Sets the maximum number of instances of `wp-cli` that can run at once.
 
 ## Related
 
