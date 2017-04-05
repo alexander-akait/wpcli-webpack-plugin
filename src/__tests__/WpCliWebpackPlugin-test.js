@@ -9,9 +9,10 @@ import webpackConfigBase from './fixtures/config-base';
 const fixturesDir = path.resolve(__dirname, 'fixtures');
 const wpCliBinPath = path.join(fixturesDir, './wp-cli.phar');
 
-test('should throw error if not passed `command` argument', (t) => {
-    t.throws(() => new WpCliWebpackPlugin(), /Require\s`command`\sargument/);
-});
+test(
+    'should throw error if not passed `command` argument',
+    (t) => t.throws(() => new WpCliWebpackPlugin(), /Require\s`command`\sargument/)
+);
 
 test(
     'should throw error if not passed `args` of `command` argument',
@@ -29,9 +30,9 @@ test(
                 new WpCliWebpackPlugin({})
             ];
 
-            t.throws(pify(webpack)(webpackConfigBase), /Each\scommand\sshould\shave\s`args`\sargument/);
-
-            return cleanupCallback();
+            return t
+                .throws(pify(webpack)(webpackConfigBase), /Each\scommand\sshould\shave\s`args`\sargument/)
+                .then(() => cleanupCallback());
         })
 );
 
@@ -53,9 +54,9 @@ test(
                 })
             ];
 
-            t.throws(pify(webpack)(webpackConfigBase), /Argument\s`args`\sof\seach\scommand\sshould\sbe\sarray/);
-
-            return cleanupCallback();
+            return t
+                .throws(pify(webpack)(webpackConfigBase), /Argument\s`args`\sof\seach\scommand\sshould\sbe\sarray/)
+                .then(() => cleanupCallback());
         })
 );
 
@@ -79,9 +80,9 @@ test(
                 })
             ];
 
-            t.notThrows(pify(webpack)(webpackConfigBase));
-
-            return cleanupCallback();
+            return t
+                .notThrows(pify(webpack)(webpackConfigBase))
+                .then(() => cleanupCallback());
         })
 );
 
@@ -104,9 +105,9 @@ test(
                 })
             ];
 
-            t.notThrows(pify(webpack)(webpackConfigBase));
-
-            return cleanupCallback();
+            return t
+                .notThrows(pify(webpack)(webpackConfigBase))
+                .then(() => cleanupCallback());
         })
 );
 
@@ -134,8 +135,8 @@ test(
                 })
             ];
 
-            t.notThrows(pify(webpack)(webpackConfigBase));
-
-            return cleanupCallback();
+            return t
+                .notThrows(pify(webpack)(webpackConfigBase))
+                .then(() => cleanupCallback());
         })
 );
