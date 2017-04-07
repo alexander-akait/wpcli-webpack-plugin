@@ -36,7 +36,6 @@ export default {
 -   `options` (optional) `object` - Options.
 
     -   `bin` - Path to `wp-cli` bin.
-    -   `maxConcurrency` - Sets the maximum number of instances of `wp-cli` that can run at once.
 
 ## Related
 

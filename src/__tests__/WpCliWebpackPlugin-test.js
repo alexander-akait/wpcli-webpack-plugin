@@ -1,9 +1,9 @@
 import WpCliWebpackPlugin from '../WpCliWebpackPlugin';
 import path from 'path';
 import pify from 'pify'; // eslint-disable-line node/no-unpublished-import
+import tempy from 'tempy'; // eslint-disable-line node/no-unpublished-import
 import test from 'ava'; // eslint-disable-line node/no-unpublished-import
-import tmp from 'tmp'; // eslint-disable-line node/no-unpublished-import
-import webpack from 'webpack'; // eslint-disable-line node/no-unpublished-import
+import webpack from 'webpack';
 import webpackConfigBase from './fixtures/config-base';
 
 const fixturesDir = path.resolve(__dirname, 'fixtures');
@@ -16,127 +16,76 @@ test(
 
 test(
     'should throw error if not passed `args` of `command` argument',
-    (t) => pify(tmp.dir, {
-        multiArgs: true
-    })({
-        unsafeCleanup: true
-    })
-        .then((result) => {
-            const [tmpPath, cleanupCallback] = result;
+    (t) => {
+        webpackConfigBase.output.path = tempy.directory();
+        webpackConfigBase.plugins = [
+            new WpCliWebpackPlugin({})
+        ];
 
-            webpackConfigBase.output.path = tmpPath;
-
-            webpackConfigBase.plugins = [
-                new WpCliWebpackPlugin({})
-            ];
-
-            return t
-                .throws(pify(webpack)(webpackConfigBase), /Each\scommand\sshould\shave\s`args`\sargument/)
-                .then(() => cleanupCallback());
-        })
+        return t.throws(pify(webpack)(webpackConfigBase), /Each\scommand\sshould\shave\s`args`\sargument/);
+    }
 );
 
 test(
     'should throw error if `args` argument is not array',
-    (t) => pify(tmp.dir, {
-        multiArgs: true
-    })({
-        unsafeCleanup: true
-    })
-        .then((result) => {
-            const [tmpPath, cleanupCallback] = result;
+    (t) => {
+        webpackConfigBase.output.path = tempy.directory();
+        webpackConfigBase.plugins = [
+            new WpCliWebpackPlugin({
+                args: 'version'
+            })
+        ];
 
-            webpackConfigBase.output.path = tmpPath;
-
-            webpackConfigBase.plugins = [
-                new WpCliWebpackPlugin({
-                    args: 'version'
-                })
-            ];
-
-            return t
-                .throws(pify(webpack)(webpackConfigBase), /Argument\s`args`\sof\seach\scommand\sshould\sbe\sarray/)
-                .then(() => cleanupCallback());
-        })
+        return t.throws(pify(webpack)(webpackConfigBase), /Argument\s`args`\sof\seach\scommand\sshould\sbe\sarray/);
+    }
 );
 
 test(
     'should successfully execute `version` command',
-    (t) => pify(tmp.dir, {
-        multiArgs: true
-    })({
-        unsafeCleanup: true
-    })
-        .then((result) => {
-            const [tmpPath, cleanupCallback] = result;
+    (t) => {
+        webpackConfigBase.output.path = tempy.directory();
+        webpackConfigBase.plugins = [
+            new WpCliWebpackPlugin({
+                args: ['cli', 'version']
+            }, {
+                bin: wpCliBinPath
+            })
+        ];
 
-            webpackConfigBase.output.path = tmpPath;
-
-            webpackConfigBase.plugins = [
-                new WpCliWebpackPlugin({
-                    args: ['cli', 'version']
-                }, {
-                    bin: wpCliBinPath
-                })
-            ];
-
-            return t
-                .notThrows(pify(webpack)(webpackConfigBase))
-                .then(() => cleanupCallback());
-        })
+        return t.notThrows(pify(webpack)(webpackConfigBase));
+    }
 );
 
 test(
     'should successfully execute `version` command with `bin` argument',
-    (t) => pify(tmp.dir, {
-        multiArgs: true
-    })({
-        unsafeCleanup: true
-    })
-        .then((result) => {
-            const [tmpPath, cleanupCallback] = result;
+    (t) => {
+        webpackConfigBase.output.path = tempy.directory();
+        webpackConfigBase.plugins = [
+            new WpCliWebpackPlugin({
+                args: ['cli', 'version'],
+                bin: wpCliBinPath
+            })
+        ];
 
-            webpackConfigBase.output.path = tmpPath;
-
-            webpackConfigBase.plugins = [
-                new WpCliWebpackPlugin({
-                    args: ['cli', 'version'],
-                    bin: wpCliBinPath
-                })
-            ];
-
-            return t
-                .notThrows(pify(webpack)(webpackConfigBase))
-                .then(() => cleanupCallback());
-        })
+        return t.notThrows(pify(webpack)(webpackConfigBase));
+    }
 );
 
 test(
     'should successfully execute multiple commands',
-    (t) => pify(tmp.dir, {
-        multiArgs: true
-    })({
-        unsafeCleanup: true
-    })
-        .then((result) => {
-            const [tmpPath, cleanupCallback] = result;
+    (t) => {
+        webpackConfigBase.output.path = tempy.directory();
+        webpackConfigBase.plugins = [
+            new WpCliWebpackPlugin([{
+                args: ['cli', 'version']
+            }, {
+                args: ['cli', 'info'],
+                format: 'json'
+            }], {
+                bin: wpCliBinPath
+            })
+        ];
 
-            webpackConfigBase.output.path = tmpPath;
-
-            webpackConfigBase.plugins = [
-                new WpCliWebpackPlugin([{
-                    args: ['cli', 'version']
-                }, {
-                    args: ['cli', 'info'],
-                    format: 'json'
-                }], {
-                    bin: wpCliBinPath,
-                    maxConcurrency: 2
-                })
-            ];
-
-            return t
-                .notThrows(pify(webpack)(webpackConfigBase))
-                .then(() => cleanupCallback());
-        })
+        return t.notThrows(pify(webpack)(webpackConfigBase));
+    }
 );
