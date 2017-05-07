@@ -1,11 +1,10 @@
 # wpcli-webpack-plugin
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/itgalaxy/wpcli-webpack-plugin.svg)](https://greenkeeper.io/)
-
 [![NPM version](https://img.shields.io/npm/v/wpcli-webpack-plugin.svg)](https://www.npmjs.org/package/wpcli-webpack-plugin) 
 [![Travis Build Status](https://img.shields.io/travis/itgalaxy/wpcli-webpack-plugin/master.svg?label=build)](https://travis-ci.org/itgalaxy/wpcli-webpack-plugin) 
 [![dependencies Status](https://david-dm.org/itgalaxy/wpcli-webpack-plugin/status.svg)](https://david-dm.org/itgalaxy/wpcli-webpack-plugin) 
 [![devDependencies Status](https://david-dm.org/itgalaxy/wpcli-webpack-plugin/dev-status.svg)](https://david-dm.org/itgalaxy/wpcli-webpack-plugin?type=dev)
+[![Greenkeeper badge](https://badges.greenkeeper.io/itgalaxy/wpcli-webpack-plugin.svg)](https://greenkeeper.io/)
 
 Webpack plugin for wp-cli
 
