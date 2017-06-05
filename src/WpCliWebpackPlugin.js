@@ -8,9 +8,13 @@ export default class WordpressDebugWebpackPlugin {
         }
 
         this.command = command;
-        this.options = Object.assign({}, {
-            bin: './wp-cli.phar'
-        }, options);
+        this.options = Object.assign(
+            {},
+            {
+                bin: './wp-cli.phar'
+            },
+            options
+        );
     }
 
     apply(compiler) {
@@ -25,22 +29,25 @@ export default class WordpressDebugWebpackPlugin {
                 commands.reduce((current, next) => {
                     const bin = next.bin || this.options.bin;
 
-                    return current
-                        .then(() => new Promise((resolve) => {
+                    return current.then(() =>
+                        new Promise(resolve => {
                             if (!next.args) {
-                                throw new Error('Each command should have `args` argument');
+                                throw new Error(
+                                    'Each command should have `args` argument'
+                                );
                             }
 
                             if (!Array.isArray(next.args)) {
-                                throw new Error('Argument `args` of each command should be array');
+                                throw new Error(
+                                    'Argument `args` of each command should be array'
+                                );
                             }
 
                             return resolve();
-                        })
-                            .then(() => wpcli(bin, [...next.args]))
+                        }).then(() => wpcli(bin, [...next.args]))
                     );
                 }, Promise.resolve()),
-                (error) => callback(error)
+                error => callback(error)
             );
         });
     }
