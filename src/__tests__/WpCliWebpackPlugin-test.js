@@ -1,18 +1,18 @@
-import WpCliWebpackPlugin from '../WpCliWebpackPlugin';
-import path from 'path';
-import pify from 'pify'; // eslint-disable-line node/no-unpublished-import
-import tempy from 'tempy'; // eslint-disable-line node/no-unpublished-import
-import test from 'ava'; // eslint-disable-line node/no-unpublished-import
-import webpack from 'webpack'; // eslint-disable-line node/no-unpublished-import
-import webpackConfigBase from './fixtures/config-base';
+import WpCliWebpackPlugin from "../WpCliWebpackPlugin";
+import path from "path";
+import pify from "pify"; // eslint-disable-line node/no-unpublished-import
+import tempy from "tempy"; // eslint-disable-line node/no-unpublished-import
+import test from "ava"; // eslint-disable-line node/no-unpublished-import
+import webpack from "webpack"; // eslint-disable-line node/no-unpublished-import
+import webpackConfigBase from "./fixtures/config-base";
 
-const fixturesDir = path.resolve(__dirname, 'fixtures');
-const wpCliBinPath = path.join(fixturesDir, './wp-cli.phar');
+const fixturesDir = path.resolve(__dirname, "fixtures");
+const wpCliBinPath = path.join(fixturesDir, "./wp-cli.phar");
 
-test('should throw error if not passed `command` argument', t =>
+test("should throw error if not passed `command` argument", t =>
     t.throws(() => new WpCliWebpackPlugin(), /Require\s`command`\sargument/));
 
-test('should throw error if not passed `args` of `command` argument', t => {
+test("should throw error if not passed `args` of `command` argument", t => {
     webpackConfigBase.output.path = tempy.directory();
     webpackConfigBase.plugins = [new WpCliWebpackPlugin({})];
 
@@ -22,11 +22,11 @@ test('should throw error if not passed `args` of `command` argument', t => {
     );
 });
 
-test('should throw error if `args` argument is not array', t => {
+test("should throw error if `args` argument is not array", t => {
     webpackConfigBase.output.path = tempy.directory();
     webpackConfigBase.plugins = [
         new WpCliWebpackPlugin({
-            args: 'version'
+            args: "version"
         })
     ];
 
@@ -36,12 +36,12 @@ test('should throw error if `args` argument is not array', t => {
     );
 });
 
-test('should successfully execute `version` command', t => {
+test("should successfully execute `version` command", t => {
     webpackConfigBase.output.path = tempy.directory();
     webpackConfigBase.plugins = [
         new WpCliWebpackPlugin(
             {
-                args: ['cli', 'version']
+                args: ["cli", "version"]
             },
             {
                 bin: wpCliBinPath
@@ -52,11 +52,11 @@ test('should successfully execute `version` command', t => {
     return t.notThrows(pify(webpack)(webpackConfigBase));
 });
 
-test('should successfully execute `version` command with `bin` argument', t => {
+test("should successfully execute `version` command with `bin` argument", t => {
     webpackConfigBase.output.path = tempy.directory();
     webpackConfigBase.plugins = [
         new WpCliWebpackPlugin({
-            args: ['cli', 'version'],
+            args: ["cli", "version"],
             bin: wpCliBinPath
         })
     ];
@@ -64,17 +64,17 @@ test('should successfully execute `version` command with `bin` argument', t => {
     return t.notThrows(pify(webpack)(webpackConfigBase));
 });
 
-test('should successfully execute multiple commands', t => {
+test("should successfully execute multiple commands", t => {
     webpackConfigBase.output.path = tempy.directory();
     webpackConfigBase.plugins = [
         new WpCliWebpackPlugin(
             [
                 {
-                    args: ['cli', 'version']
+                    args: ["cli", "version"]
                 },
                 {
-                    args: ['cli', 'info'],
-                    format: 'json'
+                    args: ["cli", "info"],
+                    format: "json"
                 }
             ],
             {

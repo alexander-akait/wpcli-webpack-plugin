@@ -1,24 +1,24 @@
-import nodeify from 'nodeify';
-import wpcli from 'wpcli';
+import nodeify from "nodeify";
+import wpcli from "wpcli";
 
 export default class WordpressDebugWebpackPlugin {
     constructor(command, options = {}) {
         if (!command) {
-            throw new Error('Require `command` argument');
+            throw new Error("Require `command` argument");
         }
 
         this.command = command;
         this.options = Object.assign(
             {},
             {
-                bin: './wp-cli.phar'
+                bin: "./wp-cli.phar"
             },
             options
         );
     }
 
     apply(compiler) {
-        compiler.plugin('after-emit', (compilerInstance, callback) => {
+        compiler.plugin("after-emit", (compilerInstance, callback) => {
             let commands = this.command;
 
             if (!Array.isArray(commands)) {
@@ -33,13 +33,13 @@ export default class WordpressDebugWebpackPlugin {
                         new Promise(resolve => {
                             if (!next.args) {
                                 throw new Error(
-                                    'Each command should have `args` argument'
+                                    "Each command should have `args` argument"
                                 );
                             }
 
                             if (!Array.isArray(next.args)) {
                                 throw new Error(
-                                    'Argument `args` of each command should be array'
+                                    "Argument `args` of each command should be array"
                                 );
                             }
 
